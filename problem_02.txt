@@ -1,0 +1,70 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int RandomNumber(int From, int To)
+{
+
+    int randNum = rand() % (To - From + 1) + From;
+    return randNum;
+}
+void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            arr[i][j] = RandomNumber(1, 100);
+        }
+    }
+}
+void PrintMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            cout << arr[i][j] << "    ";
+        }
+        cout << "\n";
+    }
+}
+int SumRowsOFMatrix(short cols,short row,int arra[3][3])
+{
+    int sum=0;
+    for(int i=0;i<cols;++i)
+    {
+       sum+=arra[row][i];
+    }
+    return sum;
+}
+void PrintSumRowOFMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for(int j=0;j<3;j++)
+    {
+        cout<<"sum Row "<<j+1<<":"<<SumRowsOFMatrix(Cols,j,arr);
+        cout<<endl;
+    }
+
+}
+
+
+int main ()
+{
+ srand(time(0));
+ int Arra[3][3];
+
+
+ FillMatrixWithRandomNumbers(Arra,3,3);
+ PrintMatrix(Arra,3,3);
+
+
+
+ PrintSumRowOFMatrix(Arra,3,3);
+
+
+
+
+
+}
