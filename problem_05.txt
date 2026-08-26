@@ -1,1 +1,73 @@
-y
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int RandomNumber(int From, int To)
+{
+
+    int randNum = rand() % (To - From + 1) + From;
+    return randNum;
+}
+void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            arr[i][j] = RandomNumber(1, 100);
+        }
+    }
+}
+void PrintMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            cout << arr[i][j] << "    ";
+        }
+        cout << "\n";
+    }
+}
+int SumColsOFMatrix(short cols,short row,int arra[3][3])
+{
+    int sum=0;
+    for(int i=0;i<cols;++i)
+    {
+       sum+=arra[i][row];
+    }
+    return sum;
+}
+void FillSumColsOFMatrixTOArra(int arr[3][3], short Rows, short Cols,int arr2[3])
+{
+    for(int j=0;j<Rows;j++)
+    {
+       arr2[j]=SumColsOFMatrix(Cols,j,arr);
+    }
+
+}
+void printSumColsArra(int Arra[100],int length)
+{
+        for(int i=0; i<=length-1; ++i)
+         cout<<"sum col"<<i+1<<":"<<Arra[i]<<endl;
+}
+
+int main ()
+{
+ srand(time(0));
+ int Arra[3][3];
+ int Arra2[3];
+
+ FillMatrixWithRandomNumbers(Arra,3,3);
+ PrintMatrix(Arra,3,3);
+
+
+
+ FillSumColsOFMatrixTOArra(Arra,3,3,Arra2);
+ printSumColsArra(Arra2,3);
+
+
+
+
+}
