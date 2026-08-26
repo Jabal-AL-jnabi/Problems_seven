@@ -1,1 +1,83 @@
-h
+#include <iostream>
+#include <string>
+using namespace std;
+
+int RandomNumber(int From, int To)
+{
+
+    int randNum = rand() % (To - From + 1) + From;
+    return randNum;
+}
+void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            arr[i][j] = RandomNumber(1, 100);
+        }
+    }
+}
+void PrintMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            cout << arr[i][j] << "    ";
+        }
+        cout << "\n";
+    }
+}
+int SumAllElementsOFMatrix(int arr[3][3], short Rows, short Cols)
+{
+    int sum=0;
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+          sum+=arr[i][j] ;
+        }
+    }
+    return sum;
+}
+bool AreTypicalMatrixs(int arr[3][3],int arr2[3][3], short Rows, short Cols)
+{
+   for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+         if(arr[i][j]!=arr2[i][j]) 
+         {
+            return 0;
+         }
+        }
+    }
+   return 1;
+}
+
+
+
+
+int main ()
+{
+ srand(time(0));
+ int Arra[3][3],Arra2[3][3];
+
+ cout<<"\nmatrix1\n\n";
+ FillMatrixWithRandomNumbers(Arra,3,3);
+ PrintMatrix(Arra,3,3);
+ cout<<"\nmatrix2\n\n";
+ FillMatrixWithRandomNumbers(Arra2,3,3);
+ PrintMatrix(Arra2,3,3);
+
+ if(AreTypicalMatrixs(Arra,Arra2,3,3))
+ cout<<"\n\nYes,the matrixs is Typical\n";
+ else
+ cout<<"\n\nNo,the matrixs is not Typical\n";
+
+
+
+
+
+}
