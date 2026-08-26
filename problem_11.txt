@@ -1,1 +1,77 @@
-h
+#include <iostream>
+#include <string>
+using namespace std;
+
+int RandomNumber(int From, int To)
+{
+
+    int randNum = rand() % (To - From + 1) + From;
+    return randNum;
+}
+void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            arr[i][j] = RandomNumber(1, 100);
+        }
+    }
+}
+void PrintMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            cout << arr[i][j] << "    ";
+        }
+        cout << "\n";
+    }
+}
+int SumAllElementsOFMatrix(int arr[3][3], short Rows, short Cols)
+{
+    int sum=0;
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+          sum+=arr[i][j] ;
+        }
+    }
+    return sum;
+}
+bool AreEqulMatrixs(int arr[3][3],int arr2[3][3], short Rows, short Cols)
+{
+   return (SumAllElementsOFMatrix(arr,Rows,Cols)==SumAllElementsOFMatrix(arr2,Rows,Cols)); 
+}
+
+
+
+
+int main ()
+{
+ srand(time(0));
+ int Arra[3][3],Arra2[3][3];
+
+ cout<<"\nmatrix1\n\n";
+ FillMatrixWithRandomNumbers(Arra,3,3);
+ PrintMatrix(Arra,3,3);
+ cout<<"\nmatrix2\n\n";
+ FillMatrixWithRandomNumbers(Arra2,3,3);
+ PrintMatrix(Arra2,3,3);
+
+if(AreEqulMatrixs(Arra,Arra2,3,3))
+cout<<"\n\n Yes; is equls\n";
+else
+cout<<"\n\n No; is not equls\n";
+
+
+
+
+
+
+
+
+
+}
