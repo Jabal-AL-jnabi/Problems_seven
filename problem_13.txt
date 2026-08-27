@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int RandomNumber(int From, int To)
+{
+
+    int randNum = rand() % (To - From + 1) + From;
+    return randNum;
+}
+void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols)
+{
+
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            arr[i][j] =  RandomNumber(1, 100);
+        }
+    }
+}
+void PrintMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            cout << arr[i][j] << "    ";
+        }
+        cout << "\n";
+    }
+}
+bool CheckIdntity (int arr[3][3], short Rows, short Cols)
+{
+   for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            if(i==j&&arr[i][j]!=1)
+            return 0;
+            if(i!=j&&arr[i][j]!=0)
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+
+int main ()
+{
+srand(time(0));
+ int Arra[3][3]={{1,0,0},{0,1,0},{0,0,1}};
+
+ FillMatrixWithRandomNumbers(Arra,3,3);
+ PrintMatrix(Arra,3,3);
+
+ if(CheckIdntity(Arra,3,3))
+ {
+ cout<<"\n Yes, the matrix is idintity\n\n";
+ }
+ else
+ {
+ cout<<"\n No, the matrix is not idintity\n\n";
+ }
+
+}
