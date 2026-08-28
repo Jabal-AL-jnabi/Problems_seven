@@ -1,0 +1,111 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+int ReadPositiveNumber()
+{
+        int num;
+
+        do
+        {
+                cout<<"enter number to serch about it in Matrix";
+                cin >> num;
+        }
+        while (num <= 0);
+
+        return num;
+}
+int getrand(int from,int to)
+{
+        return rand() %(to-from+1) +from;
+}
+void FullMatrixWithRandomNumber (int Arra[3][3],int row,int col)
+{
+  for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+          Arra[i][j]=getrand(1,100);
+      }
+  }  
+
+}
+void PrintMatrix (int Arra[3][3],int row,int col)
+{
+ for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+         cout<<setw(4)<<Arra[i][j]<<"  ";
+      }
+      cout<<endl;
+  }  
+
+}
+bool SerchINMatrix(int Arra[3][3],int row,int col,short serch)
+{
+    for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+        if(Arra[i][j]==serch)
+        return 1;
+      }
+  }
+  return 0;
+}
+void PrintSamElementsIN2Matrix(int Arra[3][3],int Arra1[3][3],int row,int col)
+{
+    for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+         int Num=Arra[i][j];
+         if(SerchINMatrix(Arra1,3,3,Num))
+         {
+            cout<<Num<<"  ";
+         }
+      }
+  }
+  
+}
+
+
+
+
+
+
+
+
+int main()
+{
+
+int Arra[3][3]={{1,2,3},{7,12,34},{77,2,3}};
+int Arra1[3][3]={{7,9,5},{9,34,8},{77,12,1}};
+
+cout<<"\n\nmatrix 1\n\n";
+PrintMatrix(Arra,3,3);
+cout<<"\n\nmatrix 2\n\n";
+PrintMatrix(Arra1,3,3);
+cout<<"\n\n\n";
+PrintSamElementsIN2Matrix(Arra,Arra1,3,3);
+
+
+
+
+
+
+
+
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
