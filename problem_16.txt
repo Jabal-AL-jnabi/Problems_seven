@@ -1,0 +1,79 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+using namespace std;
+int EnterNum()
+{
+    int Num;
+    do
+    {
+        cout<<"enter number to count it";
+        cin>>Num;
+    }while(Num<=0);
+    return Num;
+}
+void PrintMatrix(int arr[3][3], short Rows, short Cols)
+{
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            cout << arr[i][j] << "    ";
+        }
+        cout << "\n";
+    }
+}
+int CountNumINMatrix(int arr[3][3], short Rows, short Cols,int Num)
+{
+  int count=0;
+    for (short i = 0; i < Rows; i++)
+    {
+        for (short j = 0; j < Cols; j++)
+        {
+            if(arr[i][j]==Num)
+            {
+                count++;
+            }
+        }
+    }
+ return count;
+}
+int CheckSparce (int arr[3][3], short Rows, short Cols)
+{
+ short MatrixSiz=Cols*Rows  ;
+ short HalfMatrix=MatrixSiz/2;
+ 
+ return CountNumINMatrix(arr,Rows,Cols,0) > HalfMatrix ;
+    
+}
+
+
+int main ()
+{
+ 
+ int Arra[3][3]={{9,7,9},{0,0,0},{0,1,0}};
+
+ PrintMatrix(Arra,3,3);
+
+ if(CheckSparce(Arra,3,3))
+ cout<<"\n\nYes; the Matrix is sparce";
+ else
+ cout<<"\n\nNo; the Matrix is not sparce";
+ 
+ 
+ 
+ 
+ 
+ 
+return 0;
+}
+
+
+
+
+
+
+
+
+
+
