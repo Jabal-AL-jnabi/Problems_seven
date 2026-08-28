@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+int ReadPositiveNumber()
+{
+        int num;
+
+        do
+        {
+                cout<<"enter number to serch about it in Matrix";
+                cin >> num;
+        }
+        while (num <= 0);
+
+        return num;
+}
+int getrand(int from,int to)
+{
+        return rand() %(to-from+1) +from;
+}
+void FullMatrixWithRandomNumber (int Arra[3][3],int row,int col)
+{
+  for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+          Arra[i][j]=getrand(1,100);
+      }
+  }  
+
+}
+void PrintMatrix (int Arra[3][3],int row,int col)
+{
+ for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+         cout<< Arra[i][j]<<" ";
+      }
+      cout<<endl;
+  }  
+
+}
+bool SerchINMatrix(int Arra[3][3],int row,int col,short serch)
+{
+    for(int i=0;i<row;++i)  
+  {
+      for(int j=0;j<col;++j)
+      {
+        if(Arra[i][j]==serch)
+        return 1;
+      }
+  }
+  return 0;
+}
+
+
+
+
+
+
+
+
+int main()
+{
+srand(time(0));
+int Arra[3][3];
+FullMatrixWithRandomNumber(Arra,3,3);
+PrintMatrix(Arra,3,3);
+
+short serch=ReadPositiveNumber();
+
+if(SerchINMatrix(Arra,3,3,serch))
+cout<<"\n\nYes, the element is there";
+else
+cout<<"\n\nNo, the element is not there";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return 0;
+}
+
+
+
+
+
+
+
+
+
