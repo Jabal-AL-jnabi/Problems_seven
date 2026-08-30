@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+void Fibonacci (int times)
+{
+    int x=0;int rsult=0;int y=1;
+    cout<<y<<"  ";
+  for(int i=0;i<times;++i)
+  {
+     rsult=x+y;
+     cout<<rsult<<"  ";
+     x=y;
+     y=rsult;
+     rsult=0;
+  }
+  
+}
+
+
+int main()
+{
+    
+   Fibonacci(10) ;
+    
+    
+    
+    
+    
+    return 0;
+}
