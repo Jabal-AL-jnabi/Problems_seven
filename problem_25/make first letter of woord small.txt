@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+using namespace std;
+string ReadString ()
+{
+    string s1;
+    cout<<"please enter the txt"<<endl;
+    getline(cin,s1);
+    cout<<endl;
+    return s1;
+}
+string MakeFirstLetterOfWoordsmall(string s1)
+{
+    bool FirsttLetter=1;
+  for(int i=0;i<s1.length();++i)
+  {
+     if(FirsttLetter)
+     s1[i]=tolower(s1[i]);
+     FirsttLetter=(s1.at(i)==' '?1:0);
+  }
+  return s1;
+}
+
+int main()
+{
+  
+ string s1 = ReadString();
+ 
+ cout<< MakeFirstLetterOfWoordsmall(s1);
+    
+
+    
+    
+    
+    
+    
+    
+    
+    return 0;
+}
