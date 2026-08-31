@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+using namespace std;
+string ReadString ()
+{
+    string s1;
+    cout<<"please enter the txt"<<endl;
+    getline(cin,s1);
+    cout<<endl;
+    return s1;
+}
+void PrintLetterOFString(string s1)
+{
+    bool FirsttLetter=1;
+  for(int i=0;i<s1.length();++i)
+  {
+     if(FirsttLetter)
+     cout<<s1.at(i)<<endl;
+     FirsttLetter=(s1.at(i)==' '?1:0);
+  }
+}
+
+
+int main()
+{
+    
+PrintLetterOFString(ReadString());
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    return 0;
+}
