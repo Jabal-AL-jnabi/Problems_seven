@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+using namespace std;
+string ReadString()
+{
+    string s1;
+    cout<<"pleas enter the txte"<<endl;
+    getline(cin,s1);
+    return s1;
+}
+string ConvirtStringToCapital (string s1)
+{
+    for(int i=0;i<s1.length();++i)
+    {
+        s1[i]=toupper(s1[i]);
+    }
+    return s1;
+}
+string ConvirtStringToSmall (string s1)
+{
+    for(int i=0;i<s1.length();++i)
+    {
+        s1[i]=tolower(s1[i]);
+    }
+    return s1;
+}
+
+
+
+
+int main()
+{
+  string s1;
+  s1=ReadString();
+  s1=ConvirtStringToCapital(s1);
+  cout<<s1<<endl;
+  s1=ConvirtStringToSmall(s1);
+  cout<<s1<<endl;
+   
+   
+   
+   
+   
+   
+   
+    
+    return 0;
+}
