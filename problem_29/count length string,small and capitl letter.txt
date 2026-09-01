@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+string ReadString()
+{
+    string s1;
+    cout<<"enter text\n";
+    getline(cin,s1);
+    return s1;
+}
+int CapitlLetterCount(string s1)
+{
+   int j=0;
+    for(int i=0;i<s1.length();++i)
+    {   
+        if(isupper(s1[i])) 
+        {
+         ++j;
+        }
+    }
+    return j ; 
+}
+int SmallLetterCount(string s1)
+{
+    int j=0;
+    for(int i=0;i<s1.length();++i)
+    {   
+        if(islower(s1[i])) 
+        {
+         ++j;
+        }
+    }
+    return j ;
+}
+int main()
+{
+  
+string s1;
+s1=ReadString();
+cout<<"string length : "<<s1.length()<<endl;
+cout<<"capital letter count : "<<CapitlLetterCount(s1)<<endl;
+cout<<"small letter count : "<<SmallLetterCount(s1)<<endl; 
+ 
+  
+ 
+    
+    return 0;
+}
