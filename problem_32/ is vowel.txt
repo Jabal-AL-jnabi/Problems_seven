@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string>
+using namespace std;
+char Readcahercter()
+{
+    char c1;
+    cout<<"please enter text\n";
+    cin>>c1;
+    return c1;
+}
+bool CheckVowel (char c1)
+{
+    c1=tolower(c1);
+    return ((c1=='a')||(c1=='e')||(c1=='i')||(c1=='o')||(c1=='u'));
+}
+
+int main()
+{
+char c1=Readcahercter();
+if(CheckVowel(c1))
+{
+    cout<<"the letter '"<<c1<<"' is vowel";
+}
+else
+{
+    cout<<"the letter '"<<c1<<"' is not vowel";
+}
+
+
+
+    return 0;
+}
