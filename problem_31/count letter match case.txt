@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+string ReadString ()
+{
+    string s1;
+    cout<<"please enter charecter\n";
+    getline(cin,s1);
+    return s1;
+}
+char Readcahercter()
+{
+    char c1;
+    cout<<"please enter text\n";
+    cin>>c1;
+    return c1;
+}
+char ConvertLetterCase(char c1)
+{
+
+ return (islower(c1)?toupper(c1):tolower(c1));
+
+
+}
+int CountLetterMatchCase(string s1,char c1,bool SnstivCase=1)
+{
+    int j=0;
+    if (SnstivCase)
+    {
+        for(int i=0;i<s1.length();++i)
+        {
+           if(s1[i]==c1)
+           {
+             ++j;  
+           }
+        }
+    }
+    else
+    {
+      for(int i=0;i<s1.length();++i)
+        {
+           if(tolower(s1[i])==tolower(c1))
+           {
+             ++j;  
+           }
+        }  
+    }
+    return j;
+}
+int main()
+{
+string s1=ReadString();
+char c1=Readcahercter();
+
+cout<<"count '"<<c1<<"' is ="<<CountLetterMatchCase(s1,c1)<<endl;
+cout<<"count '"<<c1<<"' and '"<<ConvertLetterCase(c1)
+<<"' is ="<<CountLetterMatchCase(s1,c1,0)<<endl;
+
+    return 0;
+}
