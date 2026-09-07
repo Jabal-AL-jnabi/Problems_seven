@@ -1,0 +1,22 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+string JoinString (vector <string> vs,string delim)
+{
+    string s1;
+    for(string &s:vs)
+    {
+     s1+=s+delim;   
+    }
+    return s1.substr (0,s1.length()-delim.length());
+}
+int main()
+{
+    vector <string> vs={"jabal","ammar","hassan"};
+    cout<<JoinString(vs," ");
+    
+    
+    return 0;
+}
