@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string TrimLift(string s1)
+{
+    string TrimString;
+  for(int i=0;i<s1.length();++i)
+  {
+      if(s1[i]!=' ')
+      {
+         TrimString=s1.substr(i,s1.length()) ;
+         break;
+      }
+  }
+  return TrimString;
+}
+string TrimRight(string s1)
+{
+    string TrimString;
+  for(int i=s1.length();i>0;--i)
+  {
+      if(s1[i]!=' ')
+      {
+         TrimString=s1.substr(0,i) ;
+         break;
+      }
+  }
+  return TrimString;
+}
+string Trim(string s1)
+{
+return TrimLift(TrimRight(s1)) ;   
+}
+
+int main()
+{
+    string s1="     jabal ammar     ";
+    cout<<"string ="<<s1<<endl;
+    cout<<"left trim ="<<TrimLift(s1)<<endl;
+    cout<<"Right trim ="<<TrimRight(s1)<<endl;
+    cout<<"trim ="<<Trim(s1)<<endl;
+    
+    
+    return 0;
+}
