@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string>
+using namespace std;
+struct stclient
+{
+    string name;
+    string accuntNumber;
+    string pincode;
+    string phone;
+    double accuntBalance;
+};
+stclient ReadClient()
+{
+    stclient client;
+    
+    cout<<"please enter name\n";
+    getline(cin,client.name);
+    cout<<"please enter accunt number\n";
+    getline(cin,client.accuntNumber);
+    cout<<"please enter pin number\n";
+    getline(cin,client.pincode);
+    cout<<"please enter phone\n";
+    getline(cin,client.phone);
+    cout<<"pleae enter palans accunt\n";
+    cin>>client.accuntBalance;
+    
+    return client;
+}
+string lindata(stclient client,string dalim="#//#")
+{
+    string linedata;
+    
+    linedata+=client.name+dalim;
+    linedata+=client.accuntNumber+dalim;
+    linedata+=client.pincode+dalim;
+    linedata+=client.phone+dalim;
+    linedata+=to_string(client.accuntBalance);
+   
+   return linedata; 
+}
+
+
+int main()
+{
+  stclient client=ReadClient();
+  cout<<lindata(client);
+  
+    return 0;
+}
