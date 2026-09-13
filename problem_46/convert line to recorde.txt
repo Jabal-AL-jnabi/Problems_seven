@@ -1,0 +1,64 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+struct StClinte
+{
+ string name;
+ string accuntnumber;
+ string pincod;
+ string phone;
+ double balance;
+};
+vector <string> Splitstring (string s1,string Delim="#//#")
+{
+
+    short pos=0;
+    short count=0;
+    string words;
+    vector <string> VWords;
+    while((pos=s1.find(Delim))!=s1.npos)
+    {
+        words=s1.substr(0,pos);
+        VWords.push_back(words);
+        s1.erase(0,pos+Delim.length());
+    }
+
+    if(s1!="")
+    {
+        VWords.push_back(s1);
+    }
+    return VWords;
+
+}
+StClinte ConvertLineToRecoard (string line)
+{
+  StClinte Clinte;
+  vector <string> VClinte= Splitstring(line);
+ 
+  Clinte.balance=stod(VClinte[4]);
+  Clinte.phone=VClinte[3];
+  Clinte.pincod=VClinte[2];
+  Clinte.accuntnumber=VClinte[1];
+  Clinte.name=VClinte[0];
+ 
+ 
+  return Clinte;
+}
+void PrintRecord(StClinte Clinte)
+{
+    cout<<"name : "<<Clinte.name<<endl;
+    cout<<"Account number : "<<Clinte.accuntnumber<<endl;
+    cout<<"pincode : "<<Clinte.pincod<<endl;
+    cout<<"phone number : "<<Clinte.phone<<endl;
+    cout<<"Accuont balance : "<<Clinte.balance<<endl;
+ 
+}
+
+int main()
+{
+    string Line="jabal#//#6336#//#1234#//#0700000#//#238.78";
+    
+    StClinte RecordeClinte= ConvertLineToRecoard(Line);
+    PrintRecord(RecordeClinte);
+    return 0;
