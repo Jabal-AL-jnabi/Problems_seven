@@ -1,0 +1,89 @@
+#include <iostream> 
+#include <vector>
+#include <string>
+#include <fstream>
+using namespace std;
+
+const string FileName= "file.txt";
+struct StClient
+{
+ string name;
+ string AccountNum;
+ string pincode;
+ string phone;
+ double AccountBalance;
+};
+StClient ReadClient()
+{
+    StClient client;
+
+    cout<<"please enter name : ";
+    getline(cin>>ws,client.name);
+    cout<<"please enter accunt number : ";
+    getline(cin,client.AccountNum);
+    cout<<"please enter pincode : ";
+    getline(cin,client.pincode);
+    cout<<"please enter phone : ";
+    getline(cin,client.phone);
+    cout<<"pleae enter account palans : ";
+    cin>>client.AccountBalance;
+    
+    return client;
+}
+string linedata(StClient client,string dalim="#//#")
+{
+    string linedata;
+
+    linedata+=client.name+dalim;
+    linedata+=client.AccountNum+dalim;
+    linedata+=client.pincode+dalim;
+    linedata+=client.phone+dalim;
+    linedata+=to_string(client.AccountBalance);
+
+   return linedata; 
+}
+void AddlineToFile(string NameFile,string linedata)
+{
+   fstream MyFile;
+   MyFile.open(FileName,ios::app | ios::out);
+    
+   if(MyFile.is_open())
+   {
+     MyFile<<linedata<<endl;
+     MyFile.close();
+   }
+  
+    
+}
+void AddClient()
+{
+   StClient Client=ReadClient();
+   
+   AddlineToFile(FileName,linedata(Client));
+    
+}
+void AddClients()
+{
+    string chose;
+ do
+ {
+    cout<<"Add new client .\n\n";
+    AddClient();
+    cout<<" client added successfully,Do you need add more a client?";
+    cin>>chose;
+ }while(chose=="y"||chose=="Y");
+ 
+    
+}
+
+
+
+int main ()
+{
+   
+ AddClients();
+ 
+    
+return 0;
+
+}
