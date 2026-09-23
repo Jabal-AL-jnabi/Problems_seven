@@ -1,0 +1,109 @@
+#include <iostream> 
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+const string FileName= "file.txt";
+struct StClient
+{
+ string name;
+ string AccountNum;
+ string pincode;
+ string phone;
+ double AccountBalance;
+};
+vector <string> Splitstring (string s1,string Delim)
+{
+
+    short pos=0;
+    short count=0;
+    string words;
+    vector <string> VWords;
+    while((pos=s1.find(Delim))!=s1.npos)
+    {
+        words=s1.substr(0,pos);
+        VWords.push_back(words);
+        s1.erase(0,pos+Delim.length());
+    }
+
+    if(s1!="")
+    {
+        VWords.push_back(s1);
+    }
+    return VWords;
+
+}
+StClient ConvertLineToRecorde (string s1)
+{
+    StClient RecordeClientData;
+    vector <string> VClient =Splitstring(s1,"#//#");
+    
+    RecordeClientData.name=VClient[0];
+    RecordeClientData.AccountNum=VClient[1];
+    RecordeClientData.pincode=VClient[2];
+    RecordeClientData.phone=VClient[3];
+    RecordeClientData.AccountBalance=stod(VClient[4]);
+    
+    return RecordeClientData;
+    
+}
+vector <StClient> LodadDatatFromFile ()
+{
+   
+   vector <StClient> StVClient;
+   fstream myfile;
+   myfile.open(FileName, ios::in);
+   
+   if(myfile.is_open())
+   {
+       string line;
+       StClient Client;
+       
+       while(getline(myfile,line))
+       {
+          Client= ConvertLineToRecorde(line);
+          StVClient.push_back(Client);
+       }
+   }
+    
+    return StVClient;
+}
+void PrintRecorde(StClient Client)
+{
+    cout<<"|"<<setw(7)<<Client.name;
+    cout<<"|"<<left<<setw(14)<<Client.AccountNum;
+    cout<<"|"<<left<<setw(6)<<Client.pincode;
+    cout<<"|"<<left<<setw(12)<<Client.phone;
+    cout<<"|"<<left<<setw(8)<<Client.AccountBalance;
+}
+void PrintAllClientData(vector <StClient> VStClient)
+{
+    cout<<"\n\t\t\t"<<"Client Laste("<<VStClient.size()<<") Client(s)\n";
+    cout<<"______________________________________________________________"<<endl;
+    cout<<"|"<<left<<setw(7)<<"name";
+    cout<<"|"<<left<<setw(14)<<"Account number";
+    cout<<"|"<<left<<setw(6)<<"pincode";
+    cout<<"|"<<left<<setw(12)<<"phone ";
+    cout<<"|"<<left<<setw(8)<<"AccountBalance";
+    cout<<"\n______________________________________________________________"<<endl;
+    
+   for(StClient Client:VStClient)
+   {
+      PrintRecorde(Client);
+      cout<<endl;
+   }
+   cout<<"______________________________________________________________"<<endl;
+}
+
+int main ()
+{
+vector <StClient> VSClient = LodadDatatFromFile ();
+PrintAllClientData(VSClient);
+ 
+
+
+return 0;
+
+}
