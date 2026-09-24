@@ -1,0 +1,128 @@
+#include <iostream> 
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+const string FileName= "file.txt";
+struct StClient
+{
+ string name;
+ string AccountNum;
+ string pincode;
+ string phone;
+ double AccountBalance;
+};
+string ReadAccountNum(string messege)
+{
+    string num;
+    do
+    {   
+        cout<<messege;
+        cin>>num;
+    }while(num=="");
+    
+    return num;
+}
+vector <string> Splitstring (string s1,string Delim)
+{
+
+    short pos=0;
+    short count=0;
+    string words;
+    vector <string> VWords;
+    while((pos=s1.find(Delim))!=s1.npos)
+    {
+        words=s1.substr(0,pos);
+        VWords.push_back(words);
+        s1.erase(0,pos+Delim.length());
+    }
+
+    if(s1!="")
+    {
+        VWords.push_back(s1);
+    }
+    return VWords;
+
+}
+StClient ConvertLineToRecorde (string s1)
+{
+    StClient RecordeClientData;
+    vector <string> VClient =Splitstring(s1,"#//#");
+
+    RecordeClientData.name=VClient[0];
+    RecordeClientData.AccountNum=VClient[1];
+    RecordeClientData.pincode=VClient[2];
+    RecordeClientData.phone=VClient[3];
+    RecordeClientData.AccountBalance=stod(VClient[4]);
+
+    return RecordeClientData;
+
+}
+vector <StClient> LodadDatatFromFile ()
+{
+
+   vector <StClient> StVClient;
+   fstream myfile;
+   myfile.open(FileName, ios::in);
+
+   if(myfile.is_open())
+   {
+       string line;
+       StClient Client;
+
+       while(getline(myfile,line))
+       {
+          Client= ConvertLineToRecorde(line);
+          StVClient.push_back(Client);
+       }
+   }
+
+    return StVClient;
+}
+bool IsClientFoundByAccountNum(string AccountNum, StClient &client)
+{
+  vector <StClient> VStClient = LodadDatatFromFile ();
+  for(StClient c: VStClient)
+  {
+      if(c.AccountNum==AccountNum)
+      {
+         client = c;
+         return 1;
+      }
+  }
+  return 0;
+}
+void PrintCard (string AccountNum)
+{
+   StClient Client;
+   
+   if(IsClientFoundByAccountNum(AccountNum,Client)) 
+  {
+    
+   cout<<left<<setw(15)<<"name"<<":"<<Client.name<<endl;
+   cout<<left<<setw(15)<<"Account number"<<":"<<Client.AccountNum<<endl;
+   cout<<left<<setw(15)<<"pin code"<<":"<<Client.pincode<<endl;
+   cout<<left<<setw(15)<<"phone number"<<":"<<Client.phone<<endl;
+   cout<<left<<setw(15)<<"Account balance"<<":"<<Client.AccountBalance<<endl;
+   
+  }
+  
+   else
+  {
+    cout<<"\n Client whith account number ["<<AccountNum<<"] is not founde\n";
+  }
+
+}
+
+
+
+int main ()
+{
+string AccountNum = ReadAccountNum("please enter number accounte : ");
+PrintCard(AccountNum);
+
+return 0;
+
+}
