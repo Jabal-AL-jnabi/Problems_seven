@@ -130,24 +130,21 @@ void PrintCard (string AccountNum,vector <StClient> VStClient)
   }
 
 }
-bool UpdateClientByAccountNum(string AccountNum,vector <StClient> &VStClient)
+StClient ChangeClientByAccountNum()
 {
-  for(StClient &c: VStClient)
-  {
-      if(c.AccountNum==AccountNum)
-      {
-         cout<<left<<setw(15)<<"name"<<":";
-         getline(cin>>ws,c.name);
-         cout<<left<<setw(15)<<"pin code"<<":";
-         getline(cin,c.pincode);
-         cout<<left<<setw(15)<<"phone number"<<":";
-         getline(cin,c.phone);
-         cout<<left<<setw(15)<<"Account balance"<<":";
-         cin>>c.AccountBalance;
-         return 1;
-      }
-  }
-    return 0;
+    StClient c;
+    
+ cout<<left<<setw(15)<<"name"<<":";
+ getline(cin>>ws,c.name);
+ cout<<left<<setw(15)<<"pin code"<<":";
+ getline(cin,c.pincode);
+ cout<<left<<setw(15)<<"phone number"<<":";
+ getline(cin,c.phone);
+ cout<<left<<setw(15)<<"Account balance"<<":";
+ cin>>c.AccountBalance;
+ 
+ return c;
+    
 }
 void SaveClientDataToFile(vector <StClient> VStClient )
 {
@@ -180,17 +177,24 @@ bool UpdateClientFormation (string AccountNum,vector <StClient> &VStClient )
         cin>>Answer;
         if(Answer=='y'||Answer=='Y')
         {
-          UpdateClientByAccountNum(AccountNum,VStClient);
-          SaveClientDataToFile(VStClient);
-          VStClient=LodadDatatFromFile();
-          cout<<"update client formation is successfully\n";
+          for(StClient &c: VStClient)
+           {
+                if(c.AccountNum==AccountNum)
+                {
+                 c=ChangeClientByAccountNum();
+                 break;
+                }
+           }
         }
+        
+        SaveClientDataToFile(VStClient);
+        cout<<"update client formation is successfully\n";
+        
         return 1;
     }
     else
     {
         cout<<"Client is not found \n";
-
     }
     return 0;
 }
