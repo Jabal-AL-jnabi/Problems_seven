@@ -1,0 +1,160 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+string FileName ="file.txt";
+
+struct stclient()
+{
+    
+string name;
+string accountNum;
+string pincode;
+string phone;
+double AccountBalance;
+    
+}
+void MainMenue ()
+{
+    
+cout<<"=================================="<<endl;
+cout<<"\t\t\t main menue"<<endl;
+cout<<"=================================="<<endl;
+cout<<"[1] show client list."<<endl;
+cout<<"[2] add new client."<<endl;
+cout<<"[3] delete client."<<endl;
+cout<<"[4] update client."<<endl;
+cout<<"[5] find client."<<endl;
+cout<<"[6] Exits."<<endl;
+cout<<"=================================="<<endl;
+    
+}
+void PrintRecorde(StClient Client)
+{
+    cout<<"|"<<setw(7)<<Client.name;
+    cout<<"|"<<left<<setw(14)<<Client.AccountNum;
+    cout<<"|"<<left<<setw(6)<<Client.pincode;
+    cout<<"|"<<left<<setw(12)<<Client.phone;
+    cout<<"|"<<left<<setw(8)<<Client.AccountBalance;
+}
+void PrintAllClientData(vector <StClient> VStClient)
+{
+    cout<<"\n\t\t\t"<<"Client Laste("<<VStClient.size()<<") Client(s)\n";
+    cout<<"______________________________________________________________"<<endl;
+    cout<<"|"<<left<<setw(7)<<"name";
+    cout<<"|"<<left<<setw(14)<<"Account number";
+    cout<<"|"<<left<<setw(6)<<"pincode";
+    cout<<"|"<<left<<setw(12)<<"phone ";
+    cout<<"|"<<left<<setw(8)<<"AccountBalance";
+    cout<<"\n______________________________________________________________"<<endl;
+
+   for(StClient Client:VStClient)
+   {
+      PrintRecorde(Client);
+      cout<<endl;
+   }
+   cout<<"______________________________________________________________"<<endl;
+}
+stclient ReadClient()
+{
+    stclient client;
+
+    cout<<"please enter name\n";
+    getline(cin,client.name);
+    cout<<"please enter accunt number\n";
+    getline(cin,client.AccuntNumber);
+    cout<<"please enter pin number\n";
+    getline(cin,client.pincode);
+    cout<<"please enter phone\n";
+    getline(cin,client.phone);
+    cout<<"pleae enter palans accunt\n";
+    cin>>client.accuntBalance;
+
+    return client;
+}
+string linedata(StClient client,string dalim="#//#")
+{
+    string linedata;
+
+    linedata+=client.name+dalim;
+    linedata+=client.AccountNum+dalim;
+    linedata+=client.pincode+dalim;
+    linedata+=client.phone+dalim;
+    linedata+=to_string(client.AccountBalance);
+
+   return linedata; 
+}
+void AddlineToFile(string NameFile,string linedata)
+{
+   fstream MyFile;
+   MyFile.open(FileName,ios::app | ios::out);
+
+   if(MyFile.is_open())
+   {
+     MyFile<<linedata<<endl;
+     MyFile.close();
+   }
+
+
+}
+void AddClient()
+{
+   StClient Client=ReadClient();
+
+   AddlineToFile(FileName,linedata(Client));
+
+}
+void AddClients()
+{
+    string chose;
+ do
+ {
+    cout<<"Add new client .\n\n";
+    AddClient();
+    cout<<" client added successfully,Do you need add more a client?";
+    cin>>chose;
+ }while(chose=="y"||chose=="Y");
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void end()
+{
+cout<<"========================="<<endl;
+cout<<"\tend programm"<<endl;
+cout<<"========================="<<endl;   
+}
+int main ()
+{
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ return 0;   
+}
