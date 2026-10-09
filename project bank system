@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -7,19 +8,20 @@ using namespace std;
 
 string FileName ="file.txt";
 
-struct stclient()
+struct StClient
 {
-    
+
 string name;
-string accountNum;
+string AccountNum;
 string pincode;
 string phone;
 double AccountBalance;
-    
-}
+bool MarkForDelete;
+
+};
 void MainMenue ()
 {
-    
+
 cout<<"=================================="<<endl;
 cout<<"\t\t\t main menue"<<endl;
 cout<<"=================================="<<endl;
@@ -30,7 +32,7 @@ cout<<"[4] update client."<<endl;
 cout<<"[5] find client."<<endl;
 cout<<"[6] Exits."<<endl;
 cout<<"=================================="<<endl;
-    
+
 }
 void PrintRecorde(StClient Client)
 {
@@ -58,20 +60,88 @@ void PrintAllClientData(vector <StClient> VStClient)
    }
    cout<<"______________________________________________________________"<<endl;
 }
-stclient ReadClient()
+vector <string> Splitstring (string s1,string Delim="#//#")
 {
-    stclient client;
+
+    short pos=0;
+    short count=0;
+    string words;
+    vector <string> VWords;
+    while((pos=s1.find(Delim))!=s1.npos)
+    {
+        words=s1.substr(0,pos);
+        VWords.push_back(words);
+        s1.erase(0,pos+Delim.length());
+    }
+
+    if(s1!="")
+    {
+        VWords.push_back(s1);
+    }
+    return VWords;
+
+}
+StClient ConvertLineToRecord (string line)
+{
+  StClient Client;
+  vector <string> VClient= Splitstring(line);
+
+  Client.AccountBalance=stod(VClient[4]);
+  Client.phone=VClient[3];
+  Client.pincode=VClient[2];
+  Client.AccountNum=VClient[1];
+  Client.name=VClient[0];
+
+  return Client;
+}
+vector <StClient> LodadDatatFromFile ()
+{
+
+   vector <StClient> StVClient;
+   fstream myfile;
+   myfile.open(FileName, ios::in);
+
+   if(myfile.is_open())
+   {
+       string line;
+       StClient Client;
+     
+       while(getline(myfile,line))
+       {
+          Client= ConvertLineToRecord(line);
+          StVClient.push_back(Client);
+       }
+   }
+
+    return StVClient;
+}
+bool IsClientFoundByAccountNum(string AccountNum, StClient &client)
+{
+  vector <StClient> VStClient = LodadDatatFromFile ();
+  for(StClient c: VStClient)
+  {
+      if(c.AccountNum==AccountNum)
+      {
+         client = c;
+         return 1;
+      }
+  }
+  return 0;
+}
+StClient ReadClient()
+{
+    StClient client;
 
     cout<<"please enter name\n";
     getline(cin,client.name);
     cout<<"please enter accunt number\n";
-    getline(cin,client.AccuntNumber);
+    getline(cin,client.AccountNum);
     cout<<"please enter pin number\n";
     getline(cin,client.pincode);
     cout<<"please enter phone\n";
     getline(cin,client.phone);
     cout<<"pleae enter palans accunt\n";
-    cin>>client.accuntBalance;
+    cin>>client.AccountBalance;
 
     return client;
 }
@@ -120,7 +190,86 @@ void AddClients()
 
 
 }
+bool MarkClientForDeleteByAccountNum(string AccountNum,vector <StClient> &VStClient)
+{
+  for(StClient &c: VStClient)
+  {
+      if(c.AccountNum==AccountNum)
+      {
+         c.MarkForDelete=1;
+         return 1;
+      }
+  }
+    return 0;
+}
+void PrintCard (string AccountNum)
+{
+   StClient Client;
 
+   if(IsClientFoundByAccountNum(AccountNum,Client)) 
+  {
+
+   cout<<left<<setw(15)<<"name"<<":"<<Client.name<<endl;
+   cout<<left<<setw(15)<<"Account number"<<":"<<Client.AccountNum<<endl;
+   cout<<left<<setw(15)<<"pin code"<<":"<<Client.pincode<<endl;
+   cout<<left<<setw(15)<<"phone number"<<":"<<Client.phone<<endl;
+   cout<<left<<setw(15)<<"Account balance"<<":"<<Client.AccountBalance<<endl;
+
+  }
+
+   else
+  {
+    cout<<"\n Client whith account number ["<<AccountNum<<"] is not founde\n";
+  }
+
+}
+void SaveClientDataToFile(vector <StClient> VStClient )
+{
+  fstream MyFile;
+  MyFile.open(FileName,ios::out);
+  if(MyFile.is_open())
+  {
+    for(StClient &client : VStClient)
+    {
+        if(client.MarkForDelete!=1)
+        {
+            MyFile<<linedata(client)<<endl;
+        }
+    }
+
+
+    MyFile.close();
+  }
+
+
+}
+bool DeleteClient (string AccountNum,vector <StClient> &VStClient )
+{
+    StClient client;
+    char Answer='n';
+    if(IsClientFoundByAccountNum(AccountNum,client,VStClient))
+    {
+        PrintCard(AccountNum,VStClient);
+        cout<<"do you want delete this client\n";
+        cin>>Answer;
+        if(Answer=='y'||Answer=='Y')
+        {
+          MarkClientForDeleteByAccountNum(AccountNum,VStClient);
+          SaveClientDataToFile(VStClient);
+         
+          VStClient=LodadDatatFromFile();
+         
+         cout<<"delete client is successfully\n";
+         
+        }
+        return 1;
+    }
+    else
+    {
+        cout<<"Client is not found \n";
+    }
+    return 0;
+}
 
 
 
@@ -143,18 +292,18 @@ cout<<"========================="<<endl;
 }
 int main ()
 {
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
  return 0;   
 }
