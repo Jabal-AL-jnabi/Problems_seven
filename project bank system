@@ -19,20 +19,16 @@ double AccountBalance;
 bool MarkForDelete;
 
 };
-void MainMenue ()
+int ReadPositiveOperationNumber()
 {
-
-cout<<"=================================="<<endl;
-cout<<"\t\t\t main menue"<<endl;
-cout<<"=================================="<<endl;
-cout<<"[1] show client list."<<endl;
-cout<<"[2] add new client."<<endl;
-cout<<"[3] delete client."<<endl;
-cout<<"[4] update client."<<endl;
-cout<<"[5] find client."<<endl;
-cout<<"[6] Exits."<<endl;
-cout<<"=================================="<<endl;
-
+    int num;
+    do
+    {
+        cout<<"enter number of operation?"<<endl;
+        cin >> num;
+    }
+    while (num <= 0);
+    return num;
 }
 enum EnOptins
 {
@@ -40,6 +36,17 @@ enum EnOptins
     EDeleteClient=3,EUpdateClient=4,
     EFindClient=5,EExits=6,
 };
+string ReadAcountNumber()
+{
+    string num;
+    do
+    {
+      cout<<"please enter Account number?"<<endl;
+      cin >> num;
+    }
+    while (num =="");
+    return num;
+}
 void PrintRecorde(StClient Client)
 {
     cout<<"|"<<setw(7)<<Client.name;
@@ -103,7 +110,7 @@ vector <StClient> LodadDatatFromFile ()
 
     return StVClient;
 }
-void PrintAllClientData()
+void PrintClientList()
 {  
     vector <StClient> VStClient = LodadDatatFromFile();
 
@@ -259,10 +266,8 @@ void SaveClientDataToFile(vector <StClient> VStClient )
 bool DeleteClient ()
 {
     
-    vector <StClient> VStClient = LodadDatatFromFile();
-    cout<<"please enter account number\n";
-    string AccountNum;
-    cin>>AccountNum;
+    vector <StClient> VStClient ;
+    string AccountNum = ReadAcountNumber();
     char Answer='n';
     if(IsClientFoundByAccountNum(AccountNum,VStClient))
     {
@@ -304,8 +309,12 @@ StClient ChangeClientByAccountNum()
 
     return client;
 }
-bool UpdateClientFormation (string AccountNum,vector <StClient> &VStClient )
+bool UpdateClientFormation ()
 {
+   
+    string AccountNum=ReadAcountNumber();
+    
+    vector <StClient> VStClient ;
 
     char Answer='n';
     if(IsClientFoundByAccountNum(AccountNum,VStClient))
@@ -324,10 +333,9 @@ bool UpdateClientFormation (string AccountNum,vector <StClient> &VStClient )
                 }
            }
         }
-
+        
         SaveClientDataToFile(VStClient);
         cout<<"update client formation is successfully\n";
-
         return 1;
     }
     else
@@ -336,23 +344,19 @@ bool UpdateClientFormation (string AccountNum,vector <StClient> &VStClient )
     }
     return 0;
 }
-void FoundClient (string AccountNum)
+void FoundClient ()
 {
-   vector <StClient> VStClient;
+    vector <StClient> VStClient;
+    string AccountNum=ReadAcountNumber();
 
-    if(IsClientFoundByAccountNum(AccountNum,VStClient)) 
+   if(IsClientFoundByAccountNum(AccountNum,VStClient)) 
    {
         for(StClient client: VStClient)
        {
             if(client.AccountNum==AccountNum)
            {
-               
-              cout<<left<<setw(15)<<"name"<<":"<<client.name<<endl;
-              cout<<left<<setw(15)<<"Account number"<<":"<<client.AccountNum<<endl;
-              cout<<left<<setw(15)<<"pin code"<<":"<<client.pincode<<endl;
-              cout<<left<<setw(15)<<"phone number"<<":"<<client.phone<<endl;
-              cout<<left<<setw(15)<<"Account balance"<<":"<<client.AccountBalance<<endl;
-              break;
+               PrintCard(AccountNum);
+               break;
               
            }
         }
@@ -370,21 +374,60 @@ cout<<"========================="<<endl;
 cout<<"\tend programm"<<endl;
 cout<<"========================="<<endl;   
 }
-/*void PerfromMainMenueOption (EnOptins optins)
+void MainMenue ();
+void PerfromMainMenueOption (EnOptins optins)
 {
 switch(optins)
+{
+case EClientList :
+PrintClientList();
+MainMenue ();
+break;
 
-case ClientList :
-PrintAllClientData();
+case ENewClient :
+AddClients();
+MainMenue ();
+break;
 
+case EDeleteClient :
+DeleteClient();
+MainMenue ();
+break;
+
+case EUpdateClient :
+UpdateClientFormation();
+MainMenue ();
+break;
+
+case EFindClient :
+FoundClient();
+MainMenue ();
+break;
+}
     
-}*/
+}
+void MainMenue ()
+{
+
+cout<<"=================================="<<endl;
+cout<<"\t\t main menue"<<endl;
+cout<<"=================================="<<endl;
+cout<<"[1] show client list."<<endl;
+cout<<"[2] add new client."<<endl;
+cout<<"[3] delete client."<<endl;
+cout<<"[4] update client."<<endl;
+cout<<"[5] find client."<<endl;
+cout<<"[6] Exits."<<endl;
+cout<<"=================================="<<endl;
+
+PerfromMainMenueOption((EnOptins)ReadPositiveOperationNumber());
+}
 
 
 int main ()
 {
 
-
+MainMenue ();
 
 
 
