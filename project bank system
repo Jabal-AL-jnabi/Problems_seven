@@ -135,7 +135,7 @@ StClient ReadClient()
     StClient client;
 
     cout<<"please enter name\n";
-    getline(cin,client.name);
+    getline(cin>>ws,client.name);
     cout<<"please enter accunt number\n";
     getline(cin,client.AccountNum);
     cout<<"please enter pin number\n";
@@ -162,7 +162,7 @@ string linedata(StClient client,string dalim="#//#")
 void AddlineToFile(string NameFile,string linedata)
 {
    fstream MyFile;
-   MyFile.open(FileName,ios::app | ios::out);
+   MyFile.open(FileName,ios::app);
 
    if(MyFile.is_open())
    {
@@ -174,7 +174,7 @@ void AddlineToFile(string NameFile,string linedata)
 }
 bool IsClientFoundByAccountNum(string AccountNum, vector <StClient> VStClient )
 {
-    
+
   VStClient = LodadDatatFromFile ();
   for(StClient c: VStClient)
   {
@@ -194,15 +194,28 @@ void AddClient()
 }
 void AddClients()
 {
+    
+    
     string chose;
- do
- {
-    cout<<"Add new client .\n\n";
-    AddClient();
-    cout<<" client added successfully,Do you need add more a client?";
-    cin>>chose;
- }while(chose=="y"||chose=="Y");
-
+    string AccountNum=ReadAcountNumber();
+    vector <StClient> VStClient;
+    if(IsClientFoundByAccountNum(AccountNum,VStClient))
+    {
+        cout <<"account number ["<<AccountNum<<"] is already is exits\n";
+        AddClients();
+    }
+    else
+    {
+        
+        do
+       {
+         cout<<"Add new client .\n\n";
+         AddClient();
+         cout<<" client added successfully,Do you need add more a client?";
+         cin>>chose;
+        }while(chose=="y"||chose=="Y");
+    }
+    
 
 }
 bool MarkClientForDeleteByAccountNum(string AccountNum,vector <StClient> &VStClient)
@@ -265,7 +278,7 @@ void SaveClientDataToFile(vector <StClient> VStClient )
 }
 bool DeleteClient ()
 {
-    
+
     vector <StClient> VStClient ;
     string AccountNum = ReadAcountNumber();
     char Answer='n';
@@ -311,9 +324,9 @@ StClient ChangeClientByAccountNum()
 }
 bool UpdateClientFormation ()
 {
-   
+
     string AccountNum=ReadAcountNumber();
-    
+
     vector <StClient> VStClient ;
 
     char Answer='n';
@@ -333,7 +346,6 @@ bool UpdateClientFormation ()
                 }
            }
         }
-        
         SaveClientDataToFile(VStClient);
         cout<<"update client formation is successfully\n";
         return 1;
@@ -357,7 +369,6 @@ void FoundClient ()
            {
                PrintCard(AccountNum);
                break;
-              
            }
         }
    }
@@ -403,8 +414,12 @@ case EFindClient :
 FoundClient();
 MainMenue ();
 break;
+
+case EExits :
+end();
+
 }
-    
+
 }
 void MainMenue ()
 {
