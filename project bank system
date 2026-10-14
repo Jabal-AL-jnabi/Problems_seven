@@ -172,7 +172,7 @@ void AddlineToFile(string NameFile,string linedata)
 
 
 }
-bool IsClientFoundByAccountNum(string AccountNum, vector <StClient> VStClient )
+bool IsClientFoundByAccountNum(string AccountNum, vector <StClient> &VStClient )
 {
 
   VStClient = LodadDatatFromFile ();
