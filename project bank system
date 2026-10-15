@@ -194,8 +194,8 @@ void AddClient()
 }
 void AddClients()
 {
-    
-    
+
+
     string chose;
     string AccountNum=ReadAcountNumber();
     vector <StClient> VStClient;
@@ -206,7 +206,7 @@ void AddClients()
     }
     else
     {
-        
+
         do
        {
          cout<<"Add new client .\n\n";
@@ -215,7 +215,7 @@ void AddClients()
          cin>>chose;
         }while(chose=="y"||chose=="Y");
     }
-    
+
 
 }
 bool MarkClientForDeleteByAccountNum(string AccountNum,vector <StClient> &VStClient)
@@ -339,8 +339,8 @@ bool UpdateClientFormation ()
            {
                 if(c.AccountNum==AccountNum)
                 {
-                 c.AccountNum=AccountNum;
                  c=ChangeClientByAccountNum();
+                 c.AccountNum=AccountNum;
                  break;
                 }
            }
