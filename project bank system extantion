@@ -1,0 +1,517 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+string FileName ="file.txt";
+
+struct StClient
+{
+
+string name;
+string AccountNum;
+string pincode;
+string phone;
+double AccountBalance;
+bool MarkForDelete;
+
+};
+int ReadPositiveOperationNumber()
+{
+    int num;
+    do
+    {
+        cout<<"enter number of operation?"<<endl;
+        cin >> num;
+    }
+    while (num <= 0);
+    return num;
+}
+enum EnOptins
+{
+    EClientList=1,ENewClient=2,
+    EDeleteClient=3,EUpdateClient=4,
+    EFindClient=5,ETransaction=6,EExits=7,
+};
+string ReadAcountNumber()
+{
+    string num;
+    do
+    {
+      cout<<"please enter Account number?"<<endl;
+      cin >> num;
+    }
+    while (num =="");
+    return num;
+}
+void PrintRecorde(StClient Client)
+{
+    cout<<"|"<<setw(7)<<Client.name;
+    cout<<"|"<<left<<setw(14)<<Client.AccountNum;
+    cout<<"|"<<left<<setw(6)<<Client.pincode;
+    cout<<"|"<<left<<setw(12)<<Client.phone;
+    cout<<"|"<<left<<setw(8)<<Client.AccountBalance;
+}
+vector <string> Splitstring (string s1,string Delim="#//#")
+{
+
+    short pos=0;
+    short count=0;
+    string words;
+    vector <string> VWords;
+    while((pos=s1.find(Delim))!=s1.npos)
+    {
+        words=s1.substr(0,pos);
+        VWords.push_back(words);
+        s1.erase(0,pos+Delim.length());
+    }
+
+    if(s1!="")
+    {
+        VWords.push_back(s1);
+    }
+    return VWords;
+
+}
+StClient ConvertLineToRecord (string line)
+{
+  StClient Client;
+  vector <string> VClient= Splitstring(line);
+
+  Client.AccountBalance=stod(VClient[4]);
+  Client.phone=VClient[3];
+  Client.pincode=VClient[2];
+  Client.AccountNum=VClient[1];
+  Client.name=VClient[0];
+
+  return Client;
+}
+vector <StClient> LodadDatatFromFile ()
+{
+
+   vector <StClient> StVClient;
+   fstream myfile;
+   myfile.open(FileName, ios::in);
+
+   if(myfile.is_open())
+   {
+       string line;
+       StClient Client;
+
+       while(getline(myfile,line))
+       {
+          Client= ConvertLineToRecord(line);
+          StVClient.push_back(Client);
+       }
+   }
+
+    return StVClient;
+}
+void PrintClientList()
+{  
+    vector <StClient> VStClient = LodadDatatFromFile();
+
+    cout<<"\n\t\t\t"<<"Client Laste("<<VStClient.size()<<") Client(s)\n";
+    cout<<"______________________________________________________________"<<endl;
+    cout<<"|"<<left<<setw(7)<<"name";
+    cout<<"|"<<left<<setw(14)<<"Account number";
+    cout<<"|"<<left<<setw(6)<<"pincode";
+    cout<<"|"<<left<<setw(12)<<"phone ";
+    cout<<"|"<<left<<setw(8)<<"AccountBalance";
+    cout<<"\n______________________________________________________________"<<endl;
+
+   for(StClient Client:VStClient)
+   {
+      PrintRecorde(Client);
+      cout<<endl;
+   }
+   cout<<"______________________________________________________________"<<endl;
+}
+StClient ReadClient()
+{
+    StClient client;
+
+    cout<<"please enter name\n";
+    getline(cin>>ws,client.name);
+    cout<<"please enter accunt number\n";
+    getline(cin,client.AccountNum);
+    cout<<"please enter pin number\n";
+    getline(cin,client.pincode);
+    cout<<"please enter phone\n";
+    getline(cin,client.phone);
+    cout<<"pleae enter palans accunt\n";
+    cin>>client.AccountBalance;
+
+    return client;
+}
+string linedata(StClient client,string dalim="#//#")
+{
+    string linedata;
+
+    linedata+=client.name+dalim;
+    linedata+=client.AccountNum+dalim;
+    linedata+=client.pincode+dalim;
+    linedata+=client.phone+dalim;
+    linedata+=to_string(client.AccountBalance);
+
+   return linedata; 
+}
+void AddlineToFile(string NameFile,string linedata)
+{
+   fstream MyFile;
+   MyFile.open(FileName,ios::app);
+
+   if(MyFile.is_open())
+   {
+     MyFile<<linedata<<endl;
+     MyFile.close();
+   }
+
+
+}
+bool IsClientFoundByAccountNum(string AccountNum, vector <StClient> &VStClient )
+{
+
+  VStClient = LodadDatatFromFile ();
+  for(StClient c: VStClient)
+  {
+      if(c.AccountNum==AccountNum)
+      {
+         return 1;
+      }
+  }
+  return 0;
+}
+void AddClient()
+{
+   StClient Client=ReadClient();
+
+   AddlineToFile(FileName,linedata(Client));
+
+}
+void AddClients()
+{
+
+
+    string chose;
+    string AccountNum=ReadAcountNumber();
+    vector <StClient> VStClient;
+    if(IsClientFoundByAccountNum(AccountNum,VStClient))
+    {
+        cout <<"account number ["<<AccountNum<<"] is already is exits\n";
+        AddClients();
+    }
+    else
+    {
+
+        do
+       {
+         cout<<"Add new client .\n\n";
+         AddClient();
+         cout<<" client added successfully,Do you need add more a client?";
+         cin>>chose;
+        }while(chose=="y"||chose=="Y");
+    }
+
+
+}
+bool MarkClientForDeleteByAccountNum(string AccountNum,vector <StClient> &VStClient)
+{
+  for(StClient &c: VStClient)
+  {
+      if(c.AccountNum==AccountNum)
+      {
+         c.MarkForDelete=1;
+         return 1;
+      }
+  }
+    return 0;
+}
+void PrintCard (string AccountNum)
+{
+
+   vector <StClient> VStClient;
+   if(IsClientFoundByAccountNum(AccountNum,VStClient)) 
+  {
+        for(StClient Client:VStClient)
+        {
+           if(Client.AccountNum==AccountNum) 
+           {
+             cout<<left<<setw(15)<<"name"<<":"<<Client.name<<endl;
+             cout<<left<<setw(15)<<"Account number"<<":"<<Client.AccountNum<<endl;
+             cout<<left<<setw(15)<<"pin code"<<":"<<Client.pincode<<endl;
+             cout<<left<<setw(15)<<"phone number"<<":"<<Client.phone<<endl;
+             cout<<left<<setw(15)<<"Account balance"<<":"<<Client.AccountBalance<<endl;
+           }
+        }
+   }
+
+
+   else
+  {
+    cout<<"\n Client whith account number ["<<AccountNum<<"] is not founde\n";
+  }
+
+}
+void SaveClientDataToFile(vector <StClient> VStClient )
+{
+  fstream MyFile;
+  MyFile.open(FileName,ios::out);
+  if(MyFile.is_open())
+  {
+    for(StClient &client : VStClient)
+    {
+        if(client.MarkForDelete!=1)
+        {
+            MyFile<<linedata(client)<<endl;
+        }
+    }
+
+
+    MyFile.close();
+  }
+
+
+}
+bool DeleteClient ()
+{
+
+    vector <StClient> VStClient ;
+    string AccountNum = ReadAcountNumber();
+    char Answer='n';
+    if(IsClientFoundByAccountNum(AccountNum,VStClient))
+    {
+        PrintCard(AccountNum);
+        cout<<"do you want delete this client\n";
+        cin>>Answer;
+        if(Answer=='y'||Answer=='Y')
+        {
+          MarkClientForDeleteByAccountNum(AccountNum,VStClient);
+          SaveClientDataToFile(VStClient);
+
+          VStClient=LodadDatatFromFile();
+
+         cout<<"delete client is successfully\n";
+
+        }
+        return 1;
+    }
+    else
+    {
+        cout<<"Client is not found \n";
+    }
+    return 0;
+}
+StClient ChangeClientByAccountNum()
+{
+    StClient client;
+
+    cout<<"please enter name\n";
+    getline(cin>>ws,client.name);
+    cout<<"please enter pin number\n";
+    getline(cin,client.pincode);
+    cout<<"please enter phone\n";
+    getline(cin,client.phone);
+    cout<<"pleae enter palans accunt\n";
+    cin>>client.AccountBalance;
+
+    return client;
+}
+bool UpdateClientFormation ()
+{
+
+    string AccountNum=ReadAcountNumber();
+
+    vector <StClient> VStClient ;
+
+    char Answer='n';
+    if(IsClientFoundByAccountNum(AccountNum,VStClient))
+    {
+        PrintCard(AccountNum);
+        cout<<"do you want update formation of this client\n";
+        cin>>Answer;
+        if(Answer=='y'||Answer=='Y')
+        {
+          for(StClient &c: VStClient)
+           {
+                if(c.AccountNum==AccountNum)
+                {
+                 c=ChangeClientByAccountNum();
+                 c.AccountNum=AccountNum;
+                 break;
+                }
+           }
+        }
+        SaveClientDataToFile(VStClient);
+        cout<<"update client formation is successfully\n";
+        return 1;
+    }
+    else
+    {
+        cout<<"Client is not found \n";
+    }
+    return 0;
+}
+void FoundClient ()
+{
+    vector <StClient> VStClient;
+    string AccountNum=ReadAcountNumber();
+
+   if(IsClientFoundByAccountNum(AccountNum,VStClient)) 
+   {
+        for(StClient client: VStClient)
+       {
+            if(client.AccountNum==AccountNum)
+           {
+               PrintCard(AccountNum);
+               break;
+           }
+        }
+   }
+
+   else
+  {
+    cout<<"\n Client whith account number ["<<AccountNum<<"] is not founde\n";
+  }
+
+}
+enum enTransactionChoses
+{
+    edeposit=1,ewithdraw=2,
+    etotalBalance=3,emainMenue=4,
+};
+performTransaction(enTransactionChoses choses)
+{
+   switch(choses) 
+   {
+   case edeposit :
+   x();
+   transactionMenue();
+   break;
+   
+   case ewithdraw :
+   y();
+   transactionMenue();
+   break;
+   
+   case etotalBalance :
+   z();
+   transactionMenue();
+   break;
+   
+   case emainMenue :
+   MainMenue ();
+   break;
+   
+   } 
+};
+void transactionMenue()
+{
+    cout<<"[1] deposit\n";
+    cout<<"[2] withdraw\n";
+    cout<<"[3] total balance\n";
+    cout<<"[4] main menue \n";
+    cout<<"====================================="<<endl;
+    performTransaction((enTransactionChoses)ReadPositiveOperationNumber());
+   
+}
+void ETransactionScreen()
+{
+    cout<<"====================================="<<endl;
+    cout<<"\t\t transaction screen"<<endl;
+    cout<<"====================================="<<endl;
+    transactionMenue();
+}
+void end()
+{
+cout<<"========================="<<endl;
+cout<<"\tend programm"<<endl;
+cout<<"========================="<<endl;   
+}
+void MainMenue ();
+void PerfromMainMenueOption (EnOptins optins)
+{
+switch(optins)
+{
+case EClientList :
+PrintClientList();
+MainMenue ();
+break;
+
+case ENewClient :
+AddClients();
+MainMenue ();
+break;
+
+case EDeleteClient :
+DeleteClient();
+MainMenue ();
+break;
+
+case EUpdateClient :
+UpdateClientFormation();
+MainMenue ();
+break;
+
+case transaction :
+ETransactionScreen();
+break;
+
+case EFindClient :
+FoundClient();
+MainMenue ();
+break;
+
+case EExits :
+end();
+
+}
+
+}
+void MainMenue ()
+{
+
+cout<<"=================================="<<endl;
+cout<<"\t\t main menue"<<endl;
+cout<<"=================================="<<endl;
+cout<<"[1] show client list."<<endl;
+cout<<"[2] add new client."<<endl;
+cout<<"[3] delete client."<<endl;
+cout<<"[4] update client."<<endl;
+cout<<"[5] find client."<<endl;
+cout<<"[6] transaction."<<endl;
+cout<<"[7] Exits."<<endl;
+cout<<"=================================="<<endl;
+
+PerfromMainMenueOption((EnOptins)ReadPositiveOperationNumber());
+}
+
+
+int main ()
+{
+
+MainMenue ();
+
+
+
+
+
+
+
+
+
+
+
+ return 0;   
+}
+
+
+
+
+
+
+
+
