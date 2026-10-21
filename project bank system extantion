@@ -383,12 +383,44 @@ enum enTransactionChoses
     edeposit=1,ewithdraw=2,
     etotalBalance=3,emainMenue=4,
 };
+void deposit()
+{
+    int accountnum = ReadAcountNumber();
+    int amount;
+    
+    vector<StClient> VStClient;
+   if(IsClientFoundByAccountNum(accountnum,VStClient)) 
+   {
+       cout<<"The following are the client details:\n";
+       PrintCard(accountnum);
+       
+       cout<<"Please enter deposit amount?\n";
+       cin>>amount;
+       
+       
+   }
+   else
+   {
+       cout<<"client whit ["<<accountnum<<"] dos not exit\n";
+       deposit();
+   }
+    
+}
+void depositScreen ()
+{
+    cout<<"----------------------------------"<<endl;
+    cout<<"\t\tdeposit screen"<<endl;
+    cout<<"----------------------------------"<<endl;
+    
+    deposit();
+    
+}
 performTransaction(enTransactionChoses choses)
 {
    switch(choses) 
    {
    case edeposit :
-   x();
+   depositScreen();
    transactionMenue();
    break;
    
