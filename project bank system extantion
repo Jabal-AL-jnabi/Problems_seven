@@ -385,8 +385,8 @@ enum enTransactionChoses
 };
 void deposit()
 {
-    int accountnum = ReadAcountNumber();
-    int amount;
+    string accountnum = ReadAcountNumber();
+    double amount;
     
     vector<StClient> VStClient;
    if(IsClientFoundByAccountNum(accountnum,VStClient)) 
@@ -396,8 +396,22 @@ void deposit()
        
        cout<<"Please enter deposit amount?\n";
        cin>>amount;
-       
-       
+       for(StClient &c: VStClient)
+       {
+           if(c.AccountNum==accountnum)
+           {
+               char chose;
+               cout<<"Are you sure you want perfrom this transaction? y/n ?"<<endl;
+               cin>>chose;
+               
+               if (chose=='y'||'Y')
+               {
+                  c.AccountBalance+=amount;
+                  cout<<"Done successfully new balance is"<<c.AccountBalance<<endl;
+                  SaveClientDataToFile(VStClient);
+               }
+           }
+       }
    }
    else
    {
@@ -406,7 +420,7 @@ void deposit()
    }
     
 }
-void depositScreen ()
+void depositScreen()
 {
     cout<<"----------------------------------"<<endl;
     cout<<"\t\tdeposit screen"<<endl;
@@ -415,7 +429,74 @@ void depositScreen ()
     deposit();
     
 }
-performTransaction(enTransactionChoses choses)
+void withdraw ()
+{
+   string accountnum = ReadAcountNumber();
+   double amount;
+    
+    vector<StClient> VStClient;
+   if(IsClientFoundByAccountNum(accountnum,VStClient)) 
+   {
+       cout<<"The following are the client details:\n";
+       PrintCard(accountnum);
+       
+       cout<<"Please enter withdraw amount?\n";
+       cin>>amount;
+       for(StClient &c: VStClient)
+       {
+           if(c.AccountNum==accountnum)
+           {
+               char chose;
+               cout<<"Are you sure you want perfrom this transaction? y/n ?"<<endl;
+               cin>>chose;
+               
+               if (chose=='y'||'Y')
+               {
+                  c.AccountBalance-=amount;
+                  cout<<"Done successfully new balance is"<<c.AccountBalance<<endl;
+                  SaveClientDataToFile(VStClient);
+               }
+           }
+       }
+   }
+   else
+   {
+       cout<<"client whit ["<<accountnum<<"] dos not exit\n";
+       withdraw ();
+   } 
+}
+void withdrawScreen()
+{
+    cout<<"----------------------------------\n";
+    cout<<"\t\twithdraw screen"<<endl;
+    cout<<"----------------------------------\n";
+   
+    withdraw ();
+}
+void totalBalances()
+{
+    vector<StClient> VStClient;
+    VStClient = LodadDatatFromFile();
+    cout<<"\n\t\t\t"<<"Client Laste("<<VStClient.size()<<") Client(s)\n";
+    cout<<"______________________________________________________________"<<endl;
+    cout<<"|"<<left<<setw(7)<<"name";
+    cout<<"|"<<left<<setw(14)<<"Account number";
+    cout<<"|"<<left<<setw(8)<<"AccountBalance";
+    cout<<"\n______________________________________________________________"<<endl;
+    
+    for(StClient c:VStClient)
+    {
+      cout<<"|"<<left<<setw(7)<<c.name;
+      cout<<"|"<<left<<setw(14)<<c.AccountNum;
+      cout<<"|"<<left<<setw(8)<<c.AccountBalance; 
+      cout<<endl;
+    }
+    cout<<"\n______________________________________________________________"<<endl;
+    
+}
+void MainMenue ();
+void transactionMenue();
+void performTransaction(enTransactionChoses choses)
 {
    switch(choses) 
    {
@@ -425,12 +506,12 @@ performTransaction(enTransactionChoses choses)
    break;
    
    case ewithdraw :
-   y();
+   withdrawScreen();
    transactionMenue();
    break;
    
    case etotalBalance :
-   z();
+   totalBalances();
    transactionMenue();
    break;
    
@@ -463,7 +544,6 @@ cout<<"========================="<<endl;
 cout<<"\tend programm"<<endl;
 cout<<"========================="<<endl;   
 }
-void MainMenue ();
 void PerfromMainMenueOption (EnOptins optins)
 {
 switch(optins)
@@ -488,7 +568,7 @@ UpdateClientFormation();
 MainMenue ();
 break;
 
-case transaction :
+case ETransaction :
 ETransactionScreen();
 break;
 
