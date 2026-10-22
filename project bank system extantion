@@ -440,12 +440,17 @@ void withdraw ()
        cout<<"The following are the client details:\n";
        PrintCard(accountnum);
        
-       cout<<"Please enter withdraw amount?\n";
-       cin>>amount;
+       
        for(StClient &c: VStClient)
        {
            if(c.AccountNum==accountnum)
-           {
+           { 
+               do
+               {
+                  cout<<"Please enter withdraw amount?\n";
+                  cin>>amount; 
+               }while(amount>c.AccountBalance);
+               
                char chose;
                cout<<"Are you sure you want perfrom this transaction? y/n ?"<<endl;
                cin>>chose;
