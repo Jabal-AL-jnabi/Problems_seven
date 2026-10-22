@@ -404,7 +404,7 @@ void deposit()
                cout<<"Are you sure you want perfrom this transaction? y/n ?"<<endl;
                cin>>chose;
                
-               if (chose=='y'||'Y')
+               if (chose=='y'||chose=='Y')
                {
                   c.AccountBalance+=amount;
                   cout<<"Done successfully new balance is"<<c.AccountBalance<<endl;
@@ -455,7 +455,7 @@ void withdraw ()
                cout<<"Are you sure you want perfrom this transaction? y/n ?"<<endl;
                cin>>chose;
                
-               if (chose=='y'||'Y')
+               if (chose=='y'||chose=='Y')
                {
                   c.AccountBalance-=amount;
                   cout<<"Done successfully new balance is"<<c.AccountBalance<<endl;
